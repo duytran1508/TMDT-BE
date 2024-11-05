@@ -12,6 +12,10 @@ const productSchema = new mongoose.Schema(
     bannerUrl: { type: String },
     brand: { type: String},
     gender: { type: String },
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Category'
+    }
 
   },
   { timestamps: true }
