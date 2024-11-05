@@ -4,7 +4,18 @@ const fs = require("fs");
 const path = require("path");
 const createProduct = async (req, res) => {
   try {
-    const {name,quantityInStock,prices,size,color,imageUrl,bannerUrl,brand,gender} = req.body;
+    const {
+      name,
+      productsTypeName,
+      quantityInStock,
+      prices,
+      size,
+      color,
+      imageUrl,
+      bannerUrl,
+      brand,
+      gender
+    } = req.body;
     if (
       !name ||
       !productsTypeName ||
