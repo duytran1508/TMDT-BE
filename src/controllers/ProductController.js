@@ -2,8 +2,93 @@ const ProductService = require("../services/ProductService");
 
 const createProduct = async (req, res) => {
   try {
+<<<<<<< HEAD
     const response = await ProductService.createProduct(req.body);
     return res.status(201).json(response);
+=======
+    const {
+      name,
+      productsTypeName,
+      quantityInStock,
+      prices,
+      size,
+      color,
+      imageUrl,
+      bannerUrl,
+      brand,
+      gender
+    } = req.body;
+    if (
+      !name ||
+      !productsTypeName ||
+      !quantityInStock ||
+      !prices ||
+      !size ||
+      !color ||
+      !brand ||
+      !gender
+    ) {
+      return res.status(400).json({
+        status: "ERR",
+        message: "The input is required"
+      });
+    }
+
+    const fs = require("fs");
+    const path = require("path");
+
+    const saveBase64Image = (base64Data, filename, isImageFile) => {
+      const base64String = base64Data.split(";base64,").pop();
+
+      const folder = isImageFile ? "images" : "slides";
+      const filePath = path.join(__dirname, "../uploads", folder, filename);
+
+      const uploadsDir = path.join(__dirname, "../uploads");
+      const specificDir = path.join(uploadsDir, folder);
+
+      if (!fs.existsSync(uploadsDir)) {
+        fs.mkdirSync(uploadsDir);
+      }
+
+      if (!fs.existsSync(specificDir)) {
+        fs.mkdirSync(specificDir);
+      }
+
+      fs.writeFileSync(filePath, base64String, { encoding: "base64" });
+
+      return filePath;
+    };
+
+    const imageFilePath = saveBase64Image(
+      imageUrl,
+      `${Date.now()}_image.jpg`,
+      true
+    );
+    const bannerFilePath = saveBase64Image(
+      bannerUrl,
+      `${Date.now()}_banner.jpg`,
+      false
+    );
+
+    const productData = {
+      name,
+      quantityInStock,
+      prices,
+      size,
+      color,
+      imageUrl: imageFilePath,
+      bannerUrl: bannerFilePath,
+      brand,
+      gender
+    };
+
+    const response = await ProductService.createProduct(productData);
+    return res.status(201).json({
+      status: "OK",
+      message: "Product created successfully",
+      data: response
+    });
+>>>>>>> 23d369f40e25c5a316949cca646da96a481eae9b
   } catch (e) {
     return res.status(500).json({
       status: "ERR",
