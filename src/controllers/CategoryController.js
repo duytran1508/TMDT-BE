@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 const CategoryService = require("../services/CategoryService");
+=======
+const CategoryService = require("../services/CategorySevices");
+>>>>>>> 3d39295 (done CRUD category and CRUD product)
 
 const createCategory = async (req, res) => {
   try {
@@ -29,7 +33,14 @@ const getCategoryById = async (req, res) => {
 
 const updateCategory = async (req, res) => {
   try {
+<<<<<<< HEAD
     const result = await CategoryService.updateCategory(req.params.id, req.body);
+=======
+    const result = await CategoryService.updateCategory(
+      req.params.id,
+      req.body
+    );
+>>>>>>> 3d39295 (done CRUD category and CRUD product)
     res.status(200).json(result);
   } catch (e) {
     res.status(500).json({ status: "ERR", message: e.message });

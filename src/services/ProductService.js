@@ -66,11 +66,18 @@ const deleteProduct = (id) => {
   });
 };
 
+<<<<<<< HEAD
 
 const getAllProduct = () => {
   return new Promise(async (resolve, reject) => {
     try {
       const products = await Product.find().populate('category');
+=======
+const getAllProduct = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const products = await Product.find().populate("category");
+>>>>>>> 3d39295 (done CRUD category and CRUD product)
       resolve({
         status: "OK",
         message: "Retrieved all products successfully",
@@ -105,11 +112,18 @@ const getDetailsProduct = (id) => {
   });
 };
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3d39295 (done CRUD category and CRUD product)
 module.exports = {
   createProduct,
   updateProduct,
   getDetailsProduct,
   deleteProduct,
+<<<<<<< HEAD
   getAllProduct,
+=======
+  getAllProduct
+>>>>>>> 3d39295 (done CRUD category and CRUD product)
 };

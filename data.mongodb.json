@@ -1,0 +1,311 @@
+[
+   
+  {
+    "Brand Name": "Peter England",
+    "Color": "Orange",
+    "Size": 42,
+    "Brand Size": "L",
+    "images": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVtRavHul5UPMtCcL5qLC19lIQOEG1QHU8Jw&s"
+  },
+  {
+    "Brand Name": "Peter England",
+    "Color": "Orange",
+    "Size": 44,
+    "Brand Size": "XL",
+    "images": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVtRavHul5UPMtCcL5qLC19lIQOEG1QHU8Jw&s"
+  },
+  {
+    "Brand Name": "Peter England",
+    "Color": "Orange",
+    "Size": 46,
+    "Brand Size": "XXL",
+    "images": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVtRavHul5UPMtCcL5qLC19lIQOEG1QHU8Jw&s"
+  },
+  {
+    "Brand Name": "Peter England",
+    "Color": "Orange",
+    "Size": 48,
+    "Brand Size": "TXL",
+    "images": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVtRavHul5UPMtCcL5qLC19lIQOEG1QHU8Jw&s"
+  },
+  {
+    "Brand Name": "Arrow Sport",
+    "Color": "White",
+    "Size": 38,
+    "Brand Size": "S",
+    "images": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROMi-S4XRiPzsZN0ZRyV9ISIc6lAjb0toKtA&s"
+  },
+  {
+    "Brand Name": "Arrow Sport",
+    "Color": "White",
+    "Size": 39,
+    "Brand Size": "M",
+    "images": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROMi-S4XRiPzsZN0ZRyV9ISIc6lAjb0toKtA&s"
+  },
+  {
+    "Brand Name": "Arrow Sport",
+    "Color": "White",
+    "Size": 40,
+    "Brand Size": "L",
+    "images": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROMi-S4XRiPzsZN0ZRyV9ISIc6lAjb0toKtA&s"
+  },
+  {
+    "Brand Name": "Arrow Sport",
+    "Color": "White",
+    "Size": 42,
+    "Brand Size": "XL",
+    "images": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROMi-S4XRiPzsZN0ZRyV9ISIc6lAjb0toKtA&s"
+  },
+  {
+    "Brand Name": "Arrow Sport",
+    "Color": "White",
+    "Size": 44,
+    "Brand Size": "XXL",
+    "images": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROMi-S4XRiPzsZN0ZRyV9ISIc6lAjb0toKtA&s"
+  },
+  {
+    "Brand Name": "Arrow Sport",
+    "Color": "White",
+    "Size": 46,
+    "Brand Size": "TXL",
+    "images": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROMi-S4XRiPzsZN0ZRyV9ISIc6lAjb0toKtA&s"
+  },
+  {
+    "Brand Name": "Arrow Sport",
+    "Color": "White",
+    "Size": 48,
+    "Brand Size": "FXL",
+    "images": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROMi-S4XRiPzsZN0ZRyV9ISIc6lAjb0toKtA&s"
+  },
+  {
+    "Brand Name": "Wild West",
+    "Color": "White",
+    "Size": 38,
+    "Brand Size": "S",
+    "images": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtZ1q9o4bV0MBNTrErkJYOQ2-oCGIsD1CFGw&s"
+  },
+  {
+    "Brand Name": "Wild West",
+    "Color": "White",
+    "Size": 40,
+    "Brand Size": "M",
+    "images": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtZ1q9o4bV0MBNTrErkJYOQ2-oCGIsD1CFGw&s"
+  },
+  {
+    "Brand Name": "Wild West",
+    "Color": "White",
+    "Size": 42,
+    "Brand Size": "L",
+    "images": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtZ1q9o4bV0MBNTrErkJYOQ2-oCGIsD1CFGw&s"
+  },
+  {
+    "Brand Name": "Wild West",
+    "Color": "White",
+    "Size": 44,
+    "Brand Size": "XL",
+    "images": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtZ1q9o4bV0MBNTrErkJYOQ2-oCGIsD1CFGw&s"
+  },
+  {
+    "Brand Name": "Wild West",
+    "Color": "White",
+    "Size": 46,
+    "Brand Size": "XXL",
+    "images": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtZ1q9o4bV0MBNTrErkJYOQ2-oCGIsD1CFGw&s"
+  },
+  {
+    "Brand Name": "Wild West",
+    "Color": "White",
+    "Size": 48,
+    "Brand Size": "TXL",
+    "images": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtZ1q9o4bV0MBNTrErkJYOQ2-oCGIsD1CFGw&s"
+  },
+  {
+    "Brand Name": "Van Heusen Denim Labs",
+    "Color": "Black",
+    "Size": 38,
+    "Brand Size": "XS",
+    "images": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzZ7LdPv5gXL1FkrPspdE5fyAyLop2Vm8yXA&s"
+  },
+  {
+    "Brand Name": "Van Heusen Denim Labs",
+    "Color": "Black",
+    "Size": 39,
+    "Brand Size": "S",
+    "images": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzZ7LdPv5gXL1FkrPspdE5fyAyLop2Vm8yXA&s"
+  },
+  {
+    "Brand Name": "Van Heusen Denim Labs",
+    "Color": "Black",
+    "Size": 40,
+    "Brand Size": "M",
+    "images": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzZ7LdPv5gXL1FkrPspdE5fyAyLop2Vm8yXA&s"
+  },
+  {
+    "Brand Name": "Van Heusen Denim Labs",
+    "Color": "Black",
+    "Size": 42,
+    "Brand Size": "L",
+    "images": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzZ7LdPv5gXL1FkrPspdE5fyAyLop2Vm8yXA&s"
+  },
+  {
+    "Brand Name": "Van Heusen Denim Labs",
+    "Color": "Black",
+    "Size": 44,
+    "Brand Size": "XL",
+    "images": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzZ7LdPv5gXL1FkrPspdE5fyAyLop2Vm8yXA&s"
+  },
+  {
+    "Brand Name": "Van Heusen Denim Labs",
+    "Color": "Black",
+    "Size": 46,
+    "Brand Size": "XXL",
+    "images": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzZ7LdPv5gXL1FkrPspdE5fyAyLop2Vm8yXA&s"
+  },
+  {
+    "Brand Name": "Bene Kleed",
+    "Color": "Black",
+    "Size": 38,
+    "Brand Size": "S",
+    "images": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNSAy71zfK675ZVQox-DfUxbqtdq0YzhFLTA&s"
+  },
+  {
+    "Brand Name": "Bene Kleed",
+    "Color": "Black",
+    "Size": 39,
+    "Brand Size": "M",
+    "images": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNSAy71zfK675ZVQox-DfUxbqtdq0YzhFLTA&s"
+  },
+  {
+    "Brand Name": "Bene Kleed",
+    "Color": "Black",
+    "Size": 40,
+    "Brand Size": "L",
+    "images": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNSAy71zfK675ZVQox-DfUxbqtdq0YzhFLTA&s"
+  },
+  {
+    "Brand Name": "Bene Kleed",
+    "Color": "Black",
+    "Size": 42,
+    "Brand Size": "XL",
+    "images": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNSAy71zfK675ZVQox-DfUxbqtdq0YzhFLTA&s"
+  },
+  {
+    "Brand Name": "Bene Kleed",
+    "Color": "Black",
+    "Size": 44,
+    "Brand Size": "XXL",
+    "images": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNSAy71zfK675ZVQox-DfUxbqtdq0YzhFLTA&s"
+  },
+  {
+    "Brand Name": "R&B",
+    "Color": "White",
+    "Size": 38,
+    "Brand Size": "S",
+    "images": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxHHCPO9u6XGqr6LGof0gg0E_oG6cIypJ3lw&s"
+  },
+  {
+    "Brand Name": "R&B",
+    "Color": "White",
+    "Size": 40,
+    "Brand Size": "M",
+    "images": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxHHCPO9u6XGqr6LGof0gg0E_oG6cIypJ3lw&s"
+  },
+  {
+    "Brand Name": "R&B",
+    "Color": "White",
+    "Size": 42,
+    "Brand Size": "L",
+    "images": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxHHCPO9u6XGqr6LGof0gg0E_oG6cIypJ3lw&s"
+  },
+  {
+    "Brand Name": "R&B",
+    "Color": "White",
+    "Size": 44,
+    "Brand Size": "XL",
+    "images": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxHHCPO9u6XGqr6LGof0gg0E_oG6cIypJ3lw&s"
+  },
+  {
+    "Brand Name": "R&B",
+    "Color": "White",
+    "Size": 46,
+    "Brand Size": "XXL",
+    "images": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxHHCPO9u6XGqr6LGof0gg0E_oG6cIypJ3lw&s"
+  },
+  {
+    "Brand Name": "JANISH",
+    "Color": "Green",
+    "Size": 36,
+    "Brand Size": "XS",
+    "images": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJSlkMQtQrRGaMXWOmd3pQwDU44pG14Y_V3Q&s"
+  },
+  {
+    "Brand Name": "JANISH",
+    "Color": "Green",
+    "Size": 38,
+    "Brand Size": "S",
+    "images": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJSlkMQtQrRGaMXWOmd3pQwDU44pG14Y_V3Q&s"
+  },
+  {
+    "Brand Name": "JANISH",
+    "Color": "Green",
+    "Size": 40,
+    "Brand Size": "M",
+    "images": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJSlkMQtQrRGaMXWOmd3pQwDU44pG14Y_V3Q&s"
+  },
+  {
+    "Brand Name": "JANISH",
+    "Color": "Green",
+    "Size": 42,
+    "Brand Size": "L",
+    "images": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJSlkMQtQrRGaMXWOmd3pQwDU44pG14Y_V3Q&s"
+  },
+  {
+    "Brand Name": "JANISH",
+    "Color": "Green",
+    "Size": 44,
+    "Brand Size": "XL",
+    "images": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJSlkMQtQrRGaMXWOmd3pQwDU44pG14Y_V3Q&s"
+  },
+  {
+    "Brand Name": "H&M",
+    "Color": "Red",
+    "Size": 36,
+    "Brand Size": "XS",
+    "images": "https://canifa.com/blog/wp-content/uploads/mageplaza/blog/post/2022/05/ao-t-shirt-la-gi.webp"
+  },
+  {
+    "Brand Name": "H&M",
+    "Color": "Red",
+    "Size": 38,
+    "Brand Size": "S",
+    "images": "https://canifa.com/blog/wp-content/uploads/mageplaza/blog/post/2022/05/ao-t-shirt-la-gi.webp"
+  },
+  {
+    "Brand Name": "H&M",
+    "Color": "Red",
+    "Size": 40,
+    "Brand Size": "M",
+    "images": "https://canifa.com/blog/wp-content/uploads/mageplaza/blog/post/2022/05/ao-t-shirt-la-gi.webp"
+  },
+  {
+    "Brand Name": "H&M",
+    "Color": "Red",
+    "Size": 42,
+    "Brand Size": "L",
+    "images": "https://canifa.com/blog/wp-content/uploads/mageplaza/blog/post/2022/05/ao-t-shirt-la-gi.webp"
+  },
+  {
+    "Brand Name": "H&M",
+    "Color": "Red",
+    "Size": 44,
+    "Brand Size": "XL",
+    "images": "https://canifa.com/blog/wp-content/uploads/mageplaza/blog/post/2022/05/ao-t-shirt-la-gi.webp"
+  },
+  {
+    "Brand Name": "Van Heusen Sport",
+    "Color": "White Blue",
+    "Size": 38,
+    "Brand Size": "XS",
+    "images": "https://assets.ajio.com/medias/sys_master/root/20240513/UOPJ/6641b4aa05ac7d77bb56679c/-473Wx593H-465979781-navy-MODEL.jpg"
+  }
+]

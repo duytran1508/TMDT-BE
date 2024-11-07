@@ -3,6 +3,7 @@ const ProductService = require("../services/ProductService");
 const createProduct = async (req, res) => {
   try {
 <<<<<<< HEAD
+<<<<<<< HEAD
     const response = await ProductService.createProduct(req.body);
     return res.status(201).json(response);
 =======
@@ -89,6 +90,10 @@ const createProduct = async (req, res) => {
       data: response
     });
 >>>>>>> 23d369f40e25c5a316949cca646da96a481eae9b
+=======
+    const response = await ProductService.createProduct(req.body);
+    return res.status(201).json(response);
+>>>>>>> 3d39295 (done CRUD category and CRUD product)
   } catch (e) {
     return res.status(500).json({
       status: "ERR",
@@ -99,7 +104,14 @@ const createProduct = async (req, res) => {
 
 const updateProduct = async (req, res) => {
   try {
+<<<<<<< HEAD
     const response = await ProductService.updateProduct(req.params.id, req.body);
+=======
+    const response = await ProductService.updateProduct(
+      req.params.id,
+      req.body
+    );
+>>>>>>> 3d39295 (done CRUD category and CRUD product)
     return res.status(200).json(response);
   } catch (e) {
     return res.status(500).json({
@@ -127,7 +139,10 @@ const deleteProduct = async (req, res) => {
   }
 };
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3d39295 (done CRUD category and CRUD product)
 const getAllProduct = async (req, res) => {
   try {
     const { sort, filter } = req.query;
@@ -160,8 +175,11 @@ const getDetailsProduct = async (req, res) => {
   }
 };
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 3d39295 (done CRUD category and CRUD product)
 module.exports = {
   createProduct,
   updateProduct,
