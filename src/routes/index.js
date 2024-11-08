@@ -9,10 +9,6 @@ const routes = (app) => {
   app.use("/api/product", ProductRouter);
   app.use("/api/order", OrderRouter);
   app.use("/api/cart", CartRouter);
-<<<<<<< HEAD
-  app.use("/api/category", CategoryRouter)
-=======
   app.use("/api/category", CategoryRouter);
->>>>>>> 3d39295 (done CRUD category and CRUD product)
 };
 module.exports = routes;

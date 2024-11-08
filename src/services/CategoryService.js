@@ -1,19 +1,27 @@
 const Category = require("../models/CategoryModel");
 const Product = require("../models/ProductModel");
 
-const createCategory = (categoryData) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            const newCategory = await Category.create(categoryData);
-            resolve({
-                status: "OK",
-                message: "Category created successfully",
-                data: newCategory
-            });
-        } catch (error) {
-            reject(error);
-        }
+const createCategory = async (newProduct) => {
+  const { name, iconUrl } = newProduct;
+
+  try {
+    const createdProduct = await Category.create({
+      name: name || "",
+      iconUrl: iconUrl || ""
     });
+
+    return {
+      status: "OK",
+      message: "Product created successfully",
+      data: createdProduct
+    };
+  } catch (error) {
+    throw {
+      status: "ERR",
+      message: "Failed to create product",
+      error: error.message
+    };
+  }
 };
 
 const getAllCategories = () => {
@@ -56,7 +64,11 @@ const getCategoryById = (id) => {
 const updateCategory = (id, categoryData) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const updatedCategory = await Category.findByIdAndUpdate(id, categoryData, { new: true });
+      const updatedCategory = await Category.findByIdAndUpdate(
+        id,
+        categoryData,
+        { new: true }
+      );
       if (!updatedCategory) {
         resolve({
           status: "ERR",

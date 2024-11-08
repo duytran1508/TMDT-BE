@@ -1,23 +1,20 @@
 const Product = require("../models/ProductModel");
+const bcrypt = require("bcrypt");
 const fs = require("fs");
+const path = require("path");
 
 const createProduct = async (newProduct) => {
   const {
     name,
     quantityInStock,
     prices,
+    size,
+    color,
     imageUrl,
     bannerUrl,
-    productsTypeName,
-    inches,
-    screenResolution,
-    company,
-    cpu,
-    ram,
-    memory,
-    gpu,
-    weight,
-    opsys
+    brand,
+    gender,
+    category
   } = newProduct;
 
   try {
@@ -25,18 +22,13 @@ const createProduct = async (newProduct) => {
       name: name || "",
       quantityInStock: quantityInStock || 0,
       prices: prices || 0,
+      size: size || 0,
+      color: color || "",
       imageUrl: imageUrl || "",
       bannerUrl: bannerUrl || "",
-      productsTypeName: productsTypeName || "",
-      inches: inches || "",
-      screenResolution: screenResolution || "",
-      company: company || "",
-      cpu: cpu || "",
-      ram: ram || "",
-      memory: memory || "",
-      gpu: gpu || "",
-      weight: weight || "",
-      opsys: opsys || ""
+      brand: brand || "",
+      gender: gender || "",
+      category: category || ""
     });
 
     return {
@@ -45,7 +37,7 @@ const createProduct = async (newProduct) => {
       data: createdProduct
     };
   } catch (error) {
-    return {
+    throw {
       status: "ERR",
       message: "Failed to create product",
       error: error.message
@@ -53,154 +45,166 @@ const createProduct = async (newProduct) => {
   }
 };
 
-const updateProduct = async (id, data) => {
-  try {
-    const checkProduct = await Product.findById(id);
-    if (!checkProduct) {
-      return {
+const updateProduct = (id, data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const checkProduct = await Product.findById(id);
+      if (!checkProduct) {
+        return resolve({
+          status: "ERR",
+          message: "Product not found"
+        });
+      }
+
+      const updatedProduct = await Product.findByIdAndUpdate(id, data, {
+        new: true
+      });
+
+      resolve({
+        status: "OK",
+        message: "Product updated successfully",
+        data: updatedProduct
+      });
+    } catch (e) {
+      reject({
         status: "ERR",
-        message: "Product not found"
-      };
+        message: "Error updating product",
+        error: e.message
+      });
     }
-
-    const updatedProduct = await Product.findByIdAndUpdate(id, data, {
-      new: true
-    });
-
-    return {
-      status: "OK",
-      message: "Product updated successfully",
-      data: updatedProduct
-    };
-  } catch (e) {
-    return {
-      status: "ERR",
-      message: "Error updating product",
-      error: e.message
-    };
-  }
+  });
 };
 
-const deleteProduct = async (id) => {
-  try {
-    const checkProduct = await Product.findById(id);
-    if (!checkProduct) {
-      return {
-        status: "ERR",
-        message: "Product not found"
-      };
-    }
+const deleteProduct = (id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const checkProduct = await Product.findOne({
+        _id: id
+      });
+      if (checkProduct === null) {
+        resolve({
+          status: "Oke",
+          message: "Product is not defined"
+        });
+      }
 
-    await Product.findByIdAndDelete(id);
-    return {
-      status: "OK",
-      message: "Product deleted successfully"
-    };
-  } catch (e) {
-    return {
-      status: "ERR",
-      message: "Error deleting product",
-      error: e.message
-    };
-  }
+      await Product.findByIdAndDelete(id);
+      resolve({
+        status: "Oke",
+        massage: "delete success"
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
 };
 
-const deleteManyProduct = async (ids) => {
-  try {
-    await Product.deleteMany({ _id: { $in: ids } });
-    return {
-      status: "OK",
-      message: "Products deleted successfully"
-    };
-  } catch (e) {
-    return {
-      status: "ERR",
-      message: "Error deleting products",
-      error: e.message
-    };
-  }
+const deleteManyProduct = (ids) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      await Product.deleteMany({ _id: ids });
+      resolve({
+        status: "Oke",
+        massage: "delete many success"
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
 };
 
 const getAllProduct = async (sort, filter) => {
-  try {
-    let query = {};
-    if (filter) {
-      const [label, value] = filter;
-      query[label] = { $regex: value, $options: "i" };
+  return new Promise(async (resolve, reject) => {
+    try {
+      let query = {};
+      if (filter) {
+        const label = filter[0];
+        query[label] = { $regex: filter[1], $options: "i" };
+      }
+
+      const allProducts = await Product.find(query)
+        .populate("category")
+        .sort(sort ? sort : {})
+        .exec();
+
+      const formattedProducts = allProducts.map((product) => {
+        return {
+          ...product.toObject(),
+          imageUrl: product.imageUrl || null,
+          bannerUrl: product.bannerUrl || null
+        };
+      });
+
+      resolve({
+        status: "OK",
+        message: "success",
+        data: formattedProducts,
+        total: formattedProducts.length
+      });
+    } catch (e) {
+      reject(e);
     }
-
-    const allProducts = await Product.find(query)
-      .sort(sort || {})
-      .populate("category");
-
-    const formattedProducts = allProducts.map((product) => ({
-      ...product.toObject(),
-      imageUrl: product.imageUrl || null,
-      bannerUrl: product.bannerUrl || null
-    }));
-
-    return {
-      status: "OK",
-      message: "Products retrieved successfully",
-      data: formattedProducts,
-      total: formattedProducts.length
-    };
-  } catch (e) {
-    return {
-      status: "ERR",
-      message: "Error retrieving products",
-      error: e.message
-    };
-  }
+  });
 };
 
-const getDetailsProduct = async (id) => {
-  try {
-    const product = await Product.findById(id);
-    if (!product) {
-      return {
-        status: "ERR",
-        message: "Product not found"
-      };
-    }
-
-    return {
-      status: "OK",
-      message: "Product details retrieved successfully",
-      data: product
-    };
-  } catch (e) {
-    return {
-      status: "ERR",
-      message: "Error retrieving product details",
-      error: e.message
-    };
-  }
+const convertToBase64 = (filePath) => {
+  return new Promise((resolve, reject) => {
+    fs.readFile(filePath, (err, data) => {
+      if (err) {
+        reject(err);
+      } else {
+        const base64Image = `data:image/jpeg;base64,${data.toString("base64")}`;
+        resolve(base64Image);
+      }
+    });
+  });
 };
 
-const getAllType = async () => {
-  try {
-    const allTypes = await Product.distinct("type");
-    return {
-      status: "OK",
-      message: "Product types retrieved successfully",
-      data: allTypes
-    };
-  } catch (e) {
-    return {
-      status: "ERR",
-      message: "Error retrieving product types",
-      error: e.message
-    };
-  }
+const getDetailsProduct = (id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const product = await Product.findOne({
+        _id: id
+      });
+      if (product === null) {
+        resolve({
+          status: "Oke",
+          message: "Product is not defined"
+        });
+      }
+
+      resolve({
+        status: "Oke",
+        massage: "success",
+        data: product
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+const getAllType = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const allType = await Product.distinct("type");
+      resolve({
+        status: "Oke",
+        massage: "success",
+        data: allType
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
 };
 
 module.exports = {
   createProduct,
   updateProduct,
+  getDetailsProduct,
   deleteProduct,
   deleteManyProduct,
   getAllProduct,
-  getDetailsProduct,
   getAllType
 };

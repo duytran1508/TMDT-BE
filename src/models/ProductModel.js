@@ -14,14 +14,8 @@ const productSchema = new mongoose.Schema(
     gender: { type: String },
     category: {
       type: mongoose.Schema.Types.ObjectId,
-<<<<<<< HEAD
-      ref: 'Category'
-    }
-
-=======
       ref: "Category"
     }
->>>>>>> 3d39295 (done CRUD category and CRUD product)
   },
   { timestamps: true }
 );

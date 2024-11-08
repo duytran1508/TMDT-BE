@@ -11,23 +11,26 @@ admin.initializeApp({
 });
 
 const bucket = admin.storage().bucket();
+
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 const uploadProductImages = upload.fields([
-  { name: "image", maxCount: 1 },
-  { name: "banner", maxCount: 1 }
+  { name: "image", maxCount: 2 },
+  { name: "banner", maxCount: 2 }
 ]);
 
 const createProduct = async (req, res) => {
   try {
     const data = { ...req.body };
-
-    // Kiểm tra nếu có ảnh mới được tải lên và xử lý
+    console.log(data);
     if (req.files) {
       if (req.files["image"] && req.files["image"].length > 0) {
         const imageFile = req.files["image"][0];
-        const imageFileName = `${Date.now()}-${imageFile.originalname}`;
+        const folderName = "TMDT/products";
+        const imageFileName = `${folderName}/${Date.now()}-${
+          imageFile.originalname
+        }`;
         const fileUpload = bucket.file(imageFileName);
         const token = uuidv4();
 
@@ -65,6 +68,7 @@ const createProduct = async (req, res) => {
     }
 
     const result = await ProductService.createProduct(data);
+
     res.status(200).json(result);
   } catch (error) {
     console.error(error);
@@ -138,6 +142,7 @@ const updateProduct = async (req, res) => {
     }
 
     const result = await ProductService.updateProduct(productId, dataUpdate);
+
     if (result.status === "ERR") {
       return res.status(404).json(result);
     }
@@ -153,21 +158,31 @@ const updateProduct = async (req, res) => {
   }
 };
 
+const express = require("express");
+const app = express();
+app.put(
+  "/api/product/update/:id",
+  upload.fields([
+    { name: "image", maxCount: 1 },
+    { name: "banner", maxCount: 1 }
+  ]),
+  updateProduct
+);
+
 const deleteProduct = async (req, res) => {
   try {
     const productId = req.params.id;
     if (!productId) {
-      return res.status(400).json({
+      return res.status(200).json({
         status: "ERR",
-        message: "The productId is required."
+        message: "the userId is required "
       });
     }
     const response = await ProductService.deleteProduct(productId);
     return res.status(200).json(response);
   } catch (e) {
-    return res.status(500).json({
-      status: "ERR",
-      message: e.message
+    return res.status(404).json({
+      message: e
     });
   }
 };
@@ -175,18 +190,17 @@ const deleteProduct = async (req, res) => {
 const deleteManyProduct = async (req, res) => {
   try {
     const ids = req.body;
-    if (!ids || !Array.isArray(ids) || ids.length === 0) {
-      return res.status(400).json({
+    if (!ids) {
+      return res.status(200).json({
         status: "ERR",
-        message: "The ids are required and should be an array."
+        message: "the ids is required "
       });
     }
     const response = await ProductService.deleteManyProduct(ids);
     return res.status(200).json(response);
   } catch (e) {
-    return res.status(500).json({
-      status: "ERR",
-      message: e.message
+    return res.status(404).json({
+      message: e
     });
   }
 };
@@ -199,7 +213,6 @@ const getAllProduct = async (req, res) => {
   } catch (error) {
     console.error("Error fetching products:", error);
     return res.status(500).json({
-      status: "ERR",
       message: "An error occurred while fetching products.",
       error: error.message
     });
@@ -210,17 +223,16 @@ const getDetailsProduct = async (req, res) => {
   try {
     const productId = req.params.id;
     if (!productId) {
-      return res.status(400).json({
+      return res.status(200).json({
         status: "ERR",
-        message: "The productId is required."
+        message: "the productId is required "
       });
     }
     const response = await ProductService.getDetailsProduct(productId);
     return res.status(200).json(response);
   } catch (e) {
-    return res.status(500).json({
-      status: "ERR",
-      message: e.message
+    return res.status(404).json({
+      message: e
     });
   }
 };
@@ -230,9 +242,8 @@ const getAllType = async (req, res) => {
     const response = await ProductService.getAllType();
     return res.status(200).json(response);
   } catch (e) {
-    return res.status(500).json({
-      status: "ERR",
-      message: e.message
+    return res.status(404).json({
+      message: e
     });
   }
 };
