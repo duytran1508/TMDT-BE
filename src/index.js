@@ -7,12 +7,15 @@ const bodyParser = require("body-parser");
 const passport = require("passport");
 const path = require("path");
 const session = require("express-session");
+const fileUpload = require("express-fileupload");
 
 dotenv.config();
+const app = express();
 
 const configLoginWithGoogle = require("./controllers/GoogleController");
 
-const app = express();
+app.use(fileUpload());
+
 const port = process.env.PORT || 8001;
 
 app.use(cors());

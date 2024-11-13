@@ -48,7 +48,10 @@ const createProduct = async (req, res) => {
 
       if (req.files["banner"] && req.files["banner"].length > 0) {
         const bannerFile = req.files["banner"][0];
-        const bannerFileName = `${Date.now()}-${bannerFile.originalname}`;
+        const folderName = "TMDT/banner";
+        const bannerFileName = `${folderName}/${Date.now()}-${
+          bannerFile.originalname
+        }`;
         const fileUpload = bucket.file(bannerFileName);
         const bannerToken = uuidv4();
 
@@ -78,7 +81,6 @@ const createProduct = async (req, res) => {
 
 const updateProduct = async (req, res) => {
   const dataUpdate = { ...req.body };
-
   if (
     Object.keys(dataUpdate).length === 0 &&
     (!req.files || Object.keys(req.files).length === 0)
@@ -98,7 +100,10 @@ const updateProduct = async (req, res) => {
     // Cập nhật imageUrl nếu có file mới
     if (req.files && req.files["image"] && req.files["image"].length > 0) {
       const imageFile = req.files["image"][0];
-      const imageFileName = `${Date.now()}-${imageFile.originalname}`;
+      const folderName = "TMDT/products";
+      const imageFileName = `${folderName}/${Date.now()}-${
+        imageFile.originalname
+      }`;
       const fileUpload = bucket.file(imageFileName);
       const token = uuidv4();
 
@@ -117,7 +122,10 @@ const updateProduct = async (req, res) => {
     // Cập nhật bannerUrl nếu có file mới
     if (req.files && req.files["banner"] && req.files["banner"].length > 0) {
       const bannerFile = req.files["banner"][0];
-      const bannerFileName = `${Date.now()}-${bannerFile.originalname}`;
+      const folderName = "TMDT/banner";
+      const bannerFileName = `${folderName}/${Date.now()}-${
+        bannerFile.originalname
+      }`;
       const fileUpload = bucket.file(bannerFileName);
       const bannerToken = uuidv4();
 

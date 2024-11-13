@@ -15,6 +15,7 @@ const sendOTP = async (req, res) => {
 
 const verifyOTP = async (req, res) => {
   const { email, otpToken } = req.body;
+  console.log(email, otpToken);
   try {
     const tempUser = await TempUser.findOne({ email });
 
