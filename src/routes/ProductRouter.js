@@ -8,7 +8,12 @@ router.post(
   productController.uploadProductImages,
   productController.createProduct
 );
-router.put("/update/:id", authMiddleWare, productController.updateProduct);
+router.put(
+  "/update/:id",
+  authMiddleWare,
+  productController.uploadProductImages,
+  productController.updateProduct
+);
 router.get("/get-details/:id", productController.getDetailsProduct);
 router.delete(
   "/delete-product/:id",

@@ -19,11 +19,13 @@ const uploadProductImages = upload.fields([
   { name: "image", maxCount: 2 },
   { name: "banner", maxCount: 2 }
 ]);
+console.log("Uploading file to bucket...");
+console.log("Bucket name:", process.env.REACT_APP_FIREBASE_STORAGE_BUCKET);
+console.log("Service account email:", serviceAccount.client_email);
 
 const createProduct = async (req, res) => {
   try {
     const data = { ...req.body };
-    console.log(data);
     if (req.files) {
       if (req.files["image"] && req.files["image"].length > 0) {
         const imageFile = req.files["image"][0];
@@ -81,6 +83,7 @@ const createProduct = async (req, res) => {
 
 const updateProduct = async (req, res) => {
   const dataUpdate = { ...req.body };
+  console.log(dataUpdate);
   if (
     Object.keys(dataUpdate).length === 0 &&
     (!req.files || Object.keys(req.files).length === 0)
@@ -97,7 +100,6 @@ const updateProduct = async (req, res) => {
       });
     }
 
-    // Cập nhật imageUrl nếu có file mới
     if (req.files && req.files["image"] && req.files["image"].length > 0) {
       const imageFile = req.files["image"][0];
       const folderName = "TMDT/products";
@@ -119,7 +121,6 @@ const updateProduct = async (req, res) => {
       }/o/${encodeURIComponent(imageFileName)}?alt=media&token=${token}`;
     }
 
-    // Cập nhật bannerUrl nếu có file mới
     if (req.files && req.files["banner"] && req.files["banner"].length > 0) {
       const bannerFile = req.files["banner"][0];
       const folderName = "TMDT/banner";
@@ -141,7 +142,6 @@ const updateProduct = async (req, res) => {
       }/o/${encodeURIComponent(bannerFileName)}?alt=media&token=${bannerToken}`;
     }
 
-    // Xử lý nếu không có file mới, loại bỏ URL không cập nhật
     if (typeof dataUpdate.imageUrl !== "string") {
       delete dataUpdate.imageUrl;
     }
