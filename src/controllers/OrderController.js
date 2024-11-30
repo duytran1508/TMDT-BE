@@ -1,9 +1,9 @@
 const OrderService = require("../services/OrderService");
 const Order = require("../models/OrderModel");
 
-const createOrderController = async (req, res) => {
+const createOrder = async (req, res) => {
   try {
-    const { userId, cartId, shippingAddress, productIds, name, phone, email } =
+    const { userId, cartId, shippingAddress, productIds, name, phone, email,voucherCode } =
       req.body;
 
     const selectedProductIds = Array.isArray(productIds)
@@ -17,7 +17,8 @@ const createOrderController = async (req, res) => {
       selectedProductIds,
       name,
       phone,
-      email
+      email,
+      voucherCode
     );
 
     res.status(200).json({ status: "OK", data: newOrder });
@@ -29,7 +30,7 @@ const createOrderController = async (req, res) => {
     });
   }
 };
-const getAllOrdersByUserController = async (req, res) => {
+const getAllOrdersByUser = async (req, res) => {
   const { userId } = req.params;
   try {
     const orders = await Order.find({ userId }).populate("products.productId");
@@ -46,7 +47,7 @@ const getAllOrdersByUserController = async (req, res) => {
       data: orders
     });
   } catch (error) {
-    console.error("Lỗi trong getAllOrdersByUserController:", error);
+    console.error("Lỗi trong getAllOrdersByUser Controller:", error);
     res.status(500).json({
       status: "ERR",
       message: "Lỗi máy chủ nội bộ"
@@ -77,7 +78,7 @@ const getAllOrders = async (req, res) => {
   }
 };
 
-const getOrderByIdController = async (req, res) => {
+const getOrderById = async (req, res) => {
   const { orderId } = req.params;
   try {
     const order = await Order.findById(orderId).populate("products.productId");
@@ -101,7 +102,7 @@ const getOrderByIdController = async (req, res) => {
     });
   }
 };
-const cancelOrderController = async (req, res) => {
+const cancelOrder = async (req, res) => {
   const { orderId } = req.body;
 
   try {
@@ -120,7 +121,7 @@ const cancelOrderController = async (req, res) => {
   }
 };
 
-const shipOrderController = async (req, res) => {
+const shipOrder = async (req, res) => {
   const { orderId } = req.body;
   console.log(orderId);
   try {
@@ -139,7 +140,7 @@ const shipOrderController = async (req, res) => {
   }
 };
 
-const deliverOrderController = async (req, res) => {
+const deliverOrder = async (req, res) => {
   const { orderId } = req.body;
 
   try {
@@ -159,11 +160,11 @@ const deliverOrderController = async (req, res) => {
 };
 
 module.exports = {
-  getAllOrdersByUserController,
+  getAllOrdersByUser,
   getAllOrders,
-  createOrderController,
-  getOrderByIdController,
-  cancelOrderController,
-  shipOrderController,
-  deliverOrderController
+  createOrder,
+  getOrderById,
+  cancelOrder,
+  shipOrder,
+  deliverOrder
 };

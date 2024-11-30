@@ -8,6 +8,7 @@ const createProduct = async (newProduct) => {
     name,
     quantityInStock,
     prices,
+    discount,
     size,
     color,
     imageUrl,
@@ -22,6 +23,8 @@ const createProduct = async (newProduct) => {
       name: name || "",
       quantityInStock: quantityInStock || 0,
       prices: prices || 0,
+      discount: discount || 0,
+      promotionPrice,
       size: size || 0,
       color: color || "",
       imageUrl: imageUrl || "",
@@ -54,6 +57,13 @@ const updateProduct = (id, data) => {
           status: "ERR",
           message: "Product not found"
         });
+      }
+
+      if (data.prices !== undefined || data.discount !== undefined) {
+        const prices = data.prices || checkProduct.prices;
+        const discount =
+          data.discount !== undefined ? data.discount : checkProduct.discount;
+        data.promotionPrice = prices - (prices * discount) / 100;
       }
 
       const updatedProduct = await Product.findByIdAndUpdate(id, data, {
@@ -113,20 +123,10 @@ const deleteManyProduct = (ids) => {
   });
 };
 
-const getAllProduct = async (sort, filter) => {
+const getAllProduct = async () => {
   return new Promise(async (resolve, reject) => {
     try {
-      let query = {};
-      if (filter) {
-        const label = filter[0];
-        query[label] = { $regex: filter[1], $options: "i" };
-      }
-
-      const allProducts = await Product.find(query)
-        .populate("category")
-        .sort(sort ? sort : {})
-        .exec();
-
+      const allProducts = await Product.find();
       const formattedProducts = allProducts.map((product) => {
         return {
           ...product.toObject(),
@@ -134,7 +134,6 @@ const getAllProduct = async (sort, filter) => {
           bannerUrl: product.bannerUrl || null
         };
       });
-
       resolve({
         status: "OK",
         message: "success",
