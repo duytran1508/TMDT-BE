@@ -5,7 +5,7 @@ const Cart = require("../models/CartModel");
 const addOrUpdateProductInCart = async (req, res) => {
   try {
     const { userId, productId, quantity } = req.body;
-
+    console.log({ userId, productId, quantity });
     if (!userId || !productId || !quantity) {
       return res.status(400).json({
         status: "ERR",

@@ -32,7 +32,7 @@ class OTPService {
     const subject = "Mã xác minh";
     const mailForm = mail(token, subject);
     const mailOptions = {
-      from: "Nhóm 10",
+      from: "Nhóm 14",
       to: email,
       subject,
       html: mailForm
