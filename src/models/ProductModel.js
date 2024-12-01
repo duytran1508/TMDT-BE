@@ -1,6 +1,24 @@
 const timespan = require("jsonwebtoken/lib/timespan");
-
 const mongoose = require("mongoose");
+
+// **Schema phản hồi (Reply)**
+const replySchema = new mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  username: { type: String, required: true },
+  comment: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now }
+});
+
+// **Schema đánh giá (Review)**
+const reviewSchema = new mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  username: { type: String, required: true },
+  rating: { type: Number, required: true, min: 1, max: 5 },
+  comment: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now },
+  replies: [replySchema]
+});
+
 const productSchema = new mongoose.Schema(
   {
     name: { type: String },
@@ -17,6 +35,15 @@ const productSchema = new mongoose.Schema(
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Category"
+    },
+    reviews: [reviewSchema],
+    averageRating: { type: Number, default: 0 },
+    ratingPercentages: {
+      oneStar: { type: Number, default: 0 },
+      twoStar: { type: Number, default: 0 },
+      threeStar: { type: Number, default: 0 },
+      fourStar: { type: Number, default: 0 },
+      fiveStar: { type: Number, default: 0 }
     }
   },
   { timestamps: true }
