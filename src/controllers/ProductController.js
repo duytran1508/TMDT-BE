@@ -19,9 +19,6 @@ const uploadProductImages = upload.fields([
   { name: "image", maxCount: 2 },
   { name: "banner", maxCount: 2 }
 ]);
-console.log("Uploading file to bucket...");
-console.log("Bucket name:", process.env.REACT_APP_FIREBASE_STORAGE_BUCKET);
-console.log("Service account email:", serviceAccount.client_email);
 
 const createProduct = async (req, res) => {
   try {
@@ -83,7 +80,7 @@ const createProduct = async (req, res) => {
 
 const updateProduct = async (req, res) => {
   const dataUpdate = { ...req.body };
-  console.log(dataUpdate);
+
   if (
     Object.keys(dataUpdate).length === 0 &&
     (!req.files || Object.keys(req.files).length === 0)

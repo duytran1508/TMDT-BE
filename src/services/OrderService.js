@@ -9,7 +9,8 @@ const createOrder = async (
   productIds,
   name,
   phone,
-  email
+  email,
+  voucherCode
 ) => {
   try {
     const cart = await Cart.findById(cartId).populate("products.productId");
@@ -21,7 +22,8 @@ const createOrder = async (
       productIds.includes(String(item.productId._id))
     );
 
-    if (selectedProducts.length === 0) {
+    const validProducts = await Product.find({ _id: { $in: productIds } });
+    if (!validProducts || validProducts.length === 0) {
       throw { status: 400, message: "Không có sản phẩm hợp lệ để thanh toán" };
     }
 
@@ -34,10 +36,11 @@ const createOrder = async (
             message: `Không tìm thấy sản phẩm với ID ${item.productId}`
           };
         }
+
         return {
           productId: product._id,
           quantity: item.quantity,
-          price: product.prices
+          price: product.promotionPrice
         };
       })
     );
@@ -47,8 +50,30 @@ const createOrder = async (
       0
     );
 
-    const shippingFee = totalPrice > 500000 ? 0 : 50000;
-    const orderTotal = totalPrice + shippingFee;
+    const shippingFee = totalPrice >= 500000 ? 0 : 50000;
+
+    let discount = 0;
+    if (voucherCode) {
+      const voucher = await Voucher.findOne({ code: voucherCode });
+      if (!voucher) {
+        throw { status: 404, message: "Mã giảm giá không hợp lệ" };
+      }
+
+      if (
+        voucher.discount &&
+        voucher.discount >= 1 &&
+        voucher.discount <= 100
+      ) {
+        discount = (totalPrice + shippingFee) * (voucher.discount / 100);
+      } else {
+        throw { status: 400, message: "Voucher giảm giá không hợp lệ" };
+      }
+    }
+
+    const discountedPrice = totalPrice + shippingFee - discount;
+
+    const orderTotalRaw = Math.max(discountedPrice, 0); // Đảm bảo giá trị không âm
+    const orderTotal = parseFloat(orderTotalRaw.toFixed(2));
 
     const newOrder = new Order({
       name,
@@ -59,6 +84,7 @@ const createOrder = async (
       products,
       shippingAddress,
       totalPrice,
+      discount,
       shippingFee,
       orderTotal,
       status: "Pending"
@@ -69,10 +95,16 @@ const createOrder = async (
     cart.products = cart.products.filter(
       (item) => !productIds.includes(String(item.productId._id))
     );
-
     await cart.save();
 
-    return newOrder;
+    return {
+      status: "OK",
+      data: {
+        ...newOrder.toObject(),
+        discount,
+        totalPrice
+      }
+    };
   } catch (error) {
     console.error("Lỗi trong createOrder service:", error);
     throw error;
@@ -89,30 +121,26 @@ const getAllOrdersByUser = async (userId) => {
   }
 };
 
-const getOrderById = async (req, res) => {
-  const { orderId } = req.params;
-
-  try {
-    const order = await Order.findById(orderId).populate("products.productId");
-
-    if (!order) {
-      return res.status(404).json({
+const getOrderById = (orderId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const order = await Order.findById(orderId).populate(
+        "products.productId"
+      );
+      if (!order) {
+        return reject({
+          status: "ERR",
+          message: "Order not found"
+        });
+      }
+      resolve(order);
+    } catch (error) {
+      reject({
         status: "ERR",
-        message: "Order not found"
+        message: "Error while retrieving order: " + error.message
       });
     }
-
-    res.status(200).json({
-      status: "OK",
-      data: order
-    });
-  } catch (error) {
-    console.error("Error in getOrderById controller:", error);
-    res.status(500).json({
-      status: "ERR",
-      message: "Internal server error"
-    });
-  }
+  });
 };
 const cancelOrder = async (orderId) => {
   try {
@@ -188,6 +216,42 @@ const deliverOrder = async (orderId) => {
     };
   }
 };
+const getOrdersByStatusAndDate = async (
+  status = "Delivered",
+  timeRange = "daily"
+) => {
+  try {
+    const currentDate = new Date();
+
+    let startDate;
+    if (timeRange === "daily") {
+      startDate = new Date(currentDate.setHours(0, 0, 0, 0)); // Bắt đầu từ đầu ngày hôm nay
+    } else if (timeRange === "weekly") {
+      startDate = new Date(
+        currentDate.setDate(currentDate.getDate() - currentDate.getDay())
+      ); // Bắt đầu từ chủ nhật tuần này
+      startDate.setHours(0, 0, 0, 0);
+    } else if (timeRange === "monthly") {
+      startDate = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth(),
+        1
+      ); // Bắt đầu từ ngày đầu tháng
+      startDate.setHours(0, 0, 0, 0);
+    }
+
+    // Tìm đơn hàng với trạng thái và thời gian yêu cầu
+    const orders = await Order.find({
+      status: status,
+      createdAt: { $gte: startDate } // Tìm đơn hàng có ngày tạo >= startDate
+    }).populate("products.productId");
+
+    return orders;
+  } catch (error) {
+    console.error("Lỗi trong getOrdersByStatusAndDate service:", error);
+    throw error;
+  }
+};
 
 module.exports = {
   createOrder,
@@ -195,5 +259,6 @@ module.exports = {
   getOrderById,
   cancelOrder,
   shipOrder,
-  deliverOrder
+  deliverOrder,
+  getOrdersByStatusAndDate
 };

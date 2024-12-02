@@ -22,21 +22,25 @@ const orderSchema = new mongoose.Schema(
         quantity: { type: Number, required: true }
       }
     ],
+    shippingAddress: { type: String },
     name: { type: String, required: true },
     phone: { type: String, required: true },
     email: { type: String, required: true },
-    shippingAddress: {
-      address: { type: String, required: true },
-      city: { type: String },
-      country: { type: String }
-    },
-    totalPrice: { type: Number, required: true },
+    totalPrice: { type: Number },
     shippingFee: { type: Number, default: 0 },
-    orderTotal: { type: Number, required: true },
+    voucher: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Voucher" // Tham chiếu đến model Voucher
+    },
+    orderTotal: { type: Number },
     status: {
       type: String,
       enum: ["Pending", "Shipped", "Delivered", "Cancelled"],
       default: "Pending"
+    },
+    isPaid: {
+      type: Boolean,
+      default: false // Trạng thái thanh toán, mặc định là chưa thanh toán
     }
   },
   { timestamps: true }
