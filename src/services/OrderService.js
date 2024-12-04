@@ -1,6 +1,7 @@
 const Order = require("../models/OrderModel");
 const Cart = require("../models/CartModel");
 const Product = require("../models/ProductModel");
+const Voucher = require("../models/VoucherModel");
 
 const createOrder = async (
   userId,
@@ -253,11 +254,6 @@ const getOrdersByStatusAndDate = async (
   }
 };
 const getOrdersByTimePeriod = async (status, timePeriod, date) => {
-  const toVietnamTime = (date) => {
-    const vietnamOffset = 7;
-    return new Date(date.getTime() + vietnamOffset * 60 * 60 * 1000);
-  };
-
   try {
     let startUtcDate, endUtcDate;
     const selectedDate = new Date(date);
@@ -326,8 +322,8 @@ const getOrdersByTimePeriod = async (status, timePeriod, date) => {
 
     const ordersWithVietnamTime = orders.map((order) => ({
       ...order.toObject(),
-      createdAt: toVietnamTime(order.createdAt),
-      updatedAt: toVietnamTime(order.updatedAt)
+      createdAt: order.createdAt,
+      updatedAt: order.updatedAt
     }));
 
     const totalProducts = orders.reduce((sum, order) => {
@@ -349,8 +345,8 @@ const getOrdersByTimePeriod = async (status, timePeriod, date) => {
       totalProducts,
       totalAmount,
       totalOrders,
-      startDate: toVietnamTime(startUtcDate),
-      endDate: toVietnamTime(endUtcDate)
+      startDate: startUtcDate,
+      endDate: endUtcDate
     };
   } catch (error) {
     console.error("Error in getOrdersByTimePeriod:", error);
