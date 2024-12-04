@@ -379,7 +379,34 @@ const getTotalRevenue = async () => {
     };
   }
 };
+const updatePaymentStatus = async (orderId, isSuccess) => {
+  console.log(isSuccess);
 
+  try {
+    const order = await Order.findById(orderId);
+    if (!order) {
+      return { success: false, message: "Không tìm thấy đơn hàng" };
+    }
+
+    if (isSuccess) {
+      order.isPaid = true;
+    }
+    await order.save();
+
+    return {
+      success: true,
+      message: "Cập nhật trạng thái thanh toán thành công",
+      returnUrl: "http://localhost:3000/ket-qua-thanh-toan"
+    };
+  } catch (e) {
+    console.error("Lỗi khi cập nhật trạng thái thanh toán:", e.message);
+    return {
+      success: false,
+      message: "Cập nhật trạng thái thanh toán thất bại",
+      error: e.message
+    };
+  }
+};
 module.exports = {
   createOrder,
   getAllOrdersByUser,
@@ -388,5 +415,6 @@ module.exports = {
   shipOrder,
   deliverOrder,
   getOrdersByTimePeriod,
-  getTotalRevenue
+  getTotalRevenue,
+  updatePaymentStatus
 };
