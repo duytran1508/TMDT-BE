@@ -252,6 +252,133 @@ const getOrdersByStatusAndDate = async (
     throw error;
   }
 };
+const getOrdersByTimePeriod = async (status, timePeriod, date) => {
+  const toVietnamTime = (date) => {
+    const vietnamOffset = 7;
+    return new Date(date.getTime() + vietnamOffset * 60 * 60 * 1000);
+  };
+
+  try {
+    let startUtcDate, endUtcDate;
+    const selectedDate = new Date(date);
+
+    if (timePeriod === "day") {
+      startUtcDate = new Date(
+        selectedDate.getFullYear(),
+        selectedDate.getMonth(),
+        selectedDate.getDate(),
+        0,
+        0,
+        0
+      );
+      endUtcDate = new Date(
+        selectedDate.getFullYear(),
+        selectedDate.getMonth(),
+        selectedDate.getDate(),
+        23,
+        59,
+        59
+      );
+    } else if (timePeriod === "week") {
+      const dayOfWeek = selectedDate.getDay();
+      const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+      const diffToSunday = dayOfWeek === 0 ? 0 : 7 - dayOfWeek;
+
+      startUtcDate = new Date(
+        selectedDate.getFullYear(),
+        selectedDate.getMonth(),
+        selectedDate.getDate() + diffToMonday,
+        0,
+        0,
+        0
+      );
+
+      endUtcDate = new Date(
+        selectedDate.getFullYear(),
+        selectedDate.getMonth(),
+        selectedDate.getDate() + diffToSunday,
+        23,
+        59,
+        59
+      );
+    } else if (timePeriod === "month") {
+      startUtcDate = new Date(
+        selectedDate.getFullYear(),
+        selectedDate.getMonth(),
+        1
+      );
+      endUtcDate = new Date(
+        selectedDate.getFullYear(),
+        selectedDate.getMonth() + 1,
+        0,
+        23,
+        59,
+        59
+      );
+    } else {
+      throw new Error("Invalid time period. Use 'day', 'week', or 'month'.");
+    }
+
+    const orders = await Order.find({
+      status,
+      createdAt: { $gte: startUtcDate, $lte: endUtcDate }
+    }).populate("products.productId");
+
+    const ordersWithVietnamTime = orders.map((order) => ({
+      ...order.toObject(),
+      createdAt: toVietnamTime(order.createdAt),
+      updatedAt: toVietnamTime(order.updatedAt)
+    }));
+
+    const totalProducts = orders.reduce((sum, order) => {
+      return (
+        sum +
+        order.products.reduce((productSum, product) => {
+          return productSum + product.quantity;
+        }, 0)
+      );
+    }, 0);
+    const totalOrders = orders.length;
+    const totalAmount = orders.reduce(
+      (sum, order) => sum + order.orderTotal,
+      0
+    );
+
+    return {
+      orders: ordersWithVietnamTime,
+      totalProducts,
+      totalAmount,
+      totalOrders,
+      startDate: toVietnamTime(startUtcDate),
+      endDate: toVietnamTime(endUtcDate)
+    };
+  } catch (error) {
+    console.error("Error in getOrdersByTimePeriod:", error);
+    throw error;
+  }
+};
+const getTotalRevenue = async () => {
+  try {
+    const deliveredOrders = await Order.find({ status: "Delivered" });
+
+    const totalRevenue = deliveredOrders.reduce(
+      (sum, order) => sum + order.orderTotal,
+      0
+    );
+
+    return {
+      status: "OK",
+      totalRevenue
+    };
+  } catch (error) {
+    console.error("Error in getTotalRevenue:", error);
+    throw {
+      status: "ERR",
+      message: "Không thể tính tổng doanh thu",
+      error: error.message
+    };
+  }
+};
 
 module.exports = {
   createOrder,
@@ -260,5 +387,6 @@ module.exports = {
   cancelOrder,
   shipOrder,
   deliverOrder,
-  getOrdersByStatusAndDate
+  getOrdersByTimePeriod,
+  getTotalRevenue
 };

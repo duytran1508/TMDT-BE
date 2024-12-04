@@ -3,8 +3,16 @@ const Order = require("../models/OrderModel");
 
 const createOrder = async (req, res) => {
   try {
-    const { userId, cartId, shippingAddress, productIds, name, phone, email,voucherCode } =
-      req.body;
+    const {
+      userId,
+      cartId,
+      shippingAddress,
+      productIds,
+      name,
+      phone,
+      email,
+      voucherCode
+    } = req.body;
 
     const selectedProductIds = Array.isArray(productIds)
       ? productIds
@@ -160,23 +168,40 @@ const deliverOrder = async (req, res) => {
 };
 const getOrdersByStatusAndDateController = async (req, res) => {
   try {
-    const { status, timeRange } = req.query; // Lấy thông tin từ query string
-    // Kiểm tra timeRange hợp lệ
-    if (!['daily', 'weekly', 'monthly'].includes(timeRange)) {
-      return res.status(400).json({ message: "Thời gian không hợp lệ" });
+    const { status, date, timePeriod } = req.body;
+    console.log({ status, date, timePeriod });
+
+    if (!["day", "week", "month"].includes(timePeriod)) {
+      return res.status(400).json({
+        message:
+          "Thời gian không hợp lệ. Vui lòng chọn 'day', 'week', hoặc 'month'."
+      });
     }
 
-    // Gọi service để lấy đơn hàng
-    const orders = await OrderService.getOrdersByStatusAndDate(status, timeRange);
-    
-    // Trả về kết quả
+    const orders = await OrderService.getOrdersByTimePeriod(
+      status,
+      timePeriod,
+      date
+    );
+
     return res.status(200).json(orders);
   } catch (error) {
     console.error("Lỗi trong getOrdersByStatusAndDateController:", error);
     return res.status(500).json({ message: "Lỗi server" });
   }
 };
-
+const getRevenue = async (req, res) => {
+  try {
+    const revenueData = await OrderService.getTotalRevenue();
+    return res.status(200).json(revenueData);
+  } catch (error) {
+    return res.status(500).json({
+      status: "ERR",
+      message: "Không thể lấy tổng doanh thu",
+      error: error.message
+    });
+  }
+};
 module.exports = {
   getAllOrdersByUser,
   getAllOrders,
@@ -185,5 +210,6 @@ module.exports = {
   cancelOrder,
   shipOrder,
   deliverOrder,
+  getRevenue,
   getOrdersByStatusAndDateController
 };
