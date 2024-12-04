@@ -1,6 +1,7 @@
 const Order = require("../models/OrderModel");
 const Cart = require("../models/CartModel");
 const Product = require("../models/ProductModel");
+const Voucher = require("../models/VoucherModel")
 
 const createOrder = async (
   userId,

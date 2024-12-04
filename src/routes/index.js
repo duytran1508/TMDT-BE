@@ -9,7 +9,7 @@ const PaymentRouter = require("./PaymentRouter")
 const AdminRouter = require("./AdminRoutes");
 const VoucherRouter = require("./VoucherRouter");
 const ReviewRouter = require("./ReviewRouter");
-
+const AddressRouter = require("./AdressRouter")
 
 const routes = (app) => {
   app.use("/api/user", UserRouter);
@@ -22,6 +22,6 @@ const routes = (app) => {
   app.use("/api/category", CategoryRouter);
   app.use("/api/payments", PaymentRouter);
   app.use("/api/review", ReviewRouter);
-
+  app.use("/api/address", AddressRouter);
 };
 module.exports = routes;
