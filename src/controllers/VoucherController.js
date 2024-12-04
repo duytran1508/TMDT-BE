@@ -41,6 +41,40 @@ const createVoucher = async (req, res) => {
   }
 };
 
+const checkVoucher = async (req, res) => {
+  const { code } = req.body;
+
+  try {
+    const voucher = await Voucher.findOne({ code });
+
+    if (!voucher) {
+      return res.status(404).json({ message: "Mã giảm giá không hợp lệ" });
+    }
+
+    return res.json({ discount: voucher.discount });
+  } catch (error) {
+    return res.status(500).json({ message: "Lỗi server", error: error.message });
+  }
+};
+
+const listVouchers = async (req, res) => {
+  try {
+
+    const vouchers = await Voucher.find();
+
+    if (vouchers.length === 0) {
+      return res.status(404).json({ message: "No vouchers found" });
+    }
+
+    // Trả về danh sách voucher
+    return res.status(200).json({ data: vouchers });
+  } catch (error) {
+    return res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
 module.exports = {
-  createVoucher
+  createVoucher,
+  checkVoucher,
+  listVouchers
 };
