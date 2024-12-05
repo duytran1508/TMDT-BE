@@ -13,6 +13,7 @@ const createOrder = async (
   email,
   voucherCode
 ) => {
+  console.log({ voucherCode });
   try {
     const cart = await Cart.findById(cartId).populate("products.productId");
     if (!cart) {
@@ -56,6 +57,7 @@ const createOrder = async (
     let discount = 0;
     if (voucherCode) {
       const voucher = await Voucher.findOne({ code: voucherCode });
+      console.log("voucher", voucher);
       if (!voucher) {
         throw { status: 404, message: "Mã giảm giá không hợp lệ" };
       }
@@ -70,10 +72,11 @@ const createOrder = async (
         throw { status: 400, message: "Voucher giảm giá không hợp lệ" };
       }
     }
-
+    console.log("discount", discount);
     const discountedPrice = totalPrice + shippingFee - discount;
-
+    console.log("discountedPrice:", discountedPrice);
     const orderTotalRaw = Math.max(discountedPrice, 0);
+
     const orderTotal = parseFloat(orderTotalRaw.toFixed(2));
 
     const newOrder = new Order({
