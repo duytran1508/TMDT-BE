@@ -1,7 +1,3 @@
-// const { type } = required("express/lib/response");
-// const timespan = required("jsonwebtoken/lib/timespan");
-
-// const { default: mongoose } = require('mongoose');
 const mongoose = require("mongoose");
 const userSchema = new mongoose.Schema(
   {

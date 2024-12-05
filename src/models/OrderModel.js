@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
 
-// Hàm chuyển đổi giờ UTC sang giờ Việt Nam
 const toVietnamTime = (date) => {
-  const vietnamOffset = 7; // GMT+7
+  const vietnamOffset = 7;
   const localDate = new Date(date.getTime() + vietnamOffset * 60 * 60 * 1000);
   return localDate;
 };
@@ -54,7 +53,6 @@ const orderSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Middleware để chuyển đổi thời gian sang GMT+7
 orderSchema.pre("save", function (next) {
   if (this.isNew) {
     this.createdAt = toVietnamTime(new Date());
@@ -63,7 +61,6 @@ orderSchema.pre("save", function (next) {
   next();
 });
 
-// Middleware cho `findOneAndUpdate`
 orderSchema.pre("findOneAndUpdate", function (next) {
   this._update.updatedAt = toVietnamTime(new Date());
   next();

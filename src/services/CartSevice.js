@@ -3,13 +3,11 @@ const Product = require("../models/ProductModel");
 
 const addOrUpdateProductInCart = async (userId, productId, quantity) => {
   try {
-    // Lấy sản phẩm từ database
     const product = await Product.findById(productId);
     if (!product) {
       throw { status: 404, message: "Product not found" };
     }
 
-    // Kiểm tra xem số lượng sản phẩm trong kho có đủ không
     if (quantity > product.quantityInStock) {
       throw {
         status: 400,
@@ -17,7 +15,6 @@ const addOrUpdateProductInCart = async (userId, productId, quantity) => {
       };
     }
 
-    // Lấy giỏ hàng hiện tại của người dùng
     const existingCart = await Cart.findOne({ userId });
     const cart =
       existingCart ||
@@ -26,16 +23,13 @@ const addOrUpdateProductInCart = async (userId, productId, quantity) => {
         products: []
       });
 
-    // Tìm sản phẩm trong giỏ hàng
     const productIndex = cart.products.findIndex(
       (p) => p.productId.toString() === productId.toString()
     );
 
-    // Nếu sản phẩm đã có trong giỏ, cập nhật số lượng
     if (productIndex > -1) {
       const newQuantity = cart.products[productIndex].quantity + quantity;
 
-      // Kiểm tra xem số lượng mới có vượt quá số lượng trong kho không
       if (newQuantity > product.quantityInStock) {
         throw {
           status: 400,
@@ -45,11 +39,9 @@ const addOrUpdateProductInCart = async (userId, productId, quantity) => {
 
       cart.products[productIndex].quantity = newQuantity;
     } else {
-      // Nếu sản phẩm chưa có trong giỏ, thêm vào giỏ với số lượng yêu cầu
       cart.products.push({ productId, quantity });
     }
 
-    // Tính toán lại tổng giá trị giỏ hàng
     cart.totalPrice = await cart.products.reduce(
       async (totalPromise, productItem) => {
         const total = await totalPromise;
@@ -57,7 +49,7 @@ const addOrUpdateProductInCart = async (userId, productId, quantity) => {
         const productPrice = productInDB
           ? productInDB.promotionPrice ?? productInDB.prices
           : 0;
-    
+
         return (
           total +
           (isNaN(productPrice) || productPrice < 0
@@ -68,7 +60,6 @@ const addOrUpdateProductInCart = async (userId, productId, quantity) => {
       Promise.resolve(0)
     );
 
-    // Lưu giỏ hàng
     await cart.save();
     const populatedCart = await Cart.findById(cart._id).populate(
       "products.productId"
@@ -82,13 +73,11 @@ const addOrUpdateProductInCart = async (userId, productId, quantity) => {
 
 const UpdateProductInCart = async (userId, productId, quantity) => {
   try {
-    // Tìm giỏ hàng của người dùng
     const cart = await Cart.findOne({ userId });
     if (!cart) {
       throw { status: 404, message: "Cart not found" };
     }
 
-    // Tìm sản phẩm trong giỏ hàng
     const productIndex = cart.products.findIndex(
       (p) => p.productId.toString() === productId.toString()
     );
@@ -97,14 +86,12 @@ const UpdateProductInCart = async (userId, productId, quantity) => {
       throw { status: 404, message: "Product not found in cart" };
     }
 
-    // Giảm số lượng sản phẩm xuống 1 đơn vị
     if (cart.products[productIndex].quantity > 1) {
       cart.products[productIndex].quantity -= 1;
     } else {
       throw { status: 400, message: "Cannot decrease quantity below 1" };
     }
 
-    // Tính toán lại tổng giá (`totalPrice`)
     cart.totalPrice = await cart.products.reduce(
       async (totalPromise, productItem) => {
         const total = await totalPromise;
@@ -112,7 +99,7 @@ const UpdateProductInCart = async (userId, productId, quantity) => {
         const productPrice = productInDB
           ? productInDB.promotionPrice ?? productInDB.prices
           : 0;
-    
+
         return (
           total +
           (isNaN(productPrice) || productPrice < 0
@@ -123,10 +110,8 @@ const UpdateProductInCart = async (userId, productId, quantity) => {
       Promise.resolve(0)
     );
 
-    // Lưu giỏ hàng
     await cart.save();
 
-    // Populate thông tin sản phẩm và trả về
     const populatedCart = await Cart.findById(cart._id).populate(
       "products.productId"
     );
@@ -183,7 +168,8 @@ const removeProductFromCart = async (userId, productId) => {
       );
 
       cart.totalPrice = cart.products.reduce((total, product) => {
-        const productPrice = (product.productId.promotionPrice ?? product.productId.prices) || 0;
+        const productPrice =
+          (product.productId.promotionPrice ?? product.productId.prices) || 0;
         return total + productPrice * product.quantity;
       }, 0);
 

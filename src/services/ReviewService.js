@@ -1,6 +1,5 @@
 const Product = require("../models/ProductModel");
 
-// Thêm đánh giá mới
 const addReview = async (productId, userId, username, rating, comment) => {
   const product = await Product.findById(productId);
   if (!product) {
@@ -9,7 +8,6 @@ const addReview = async (productId, userId, username, rating, comment) => {
 
   product.reviews.push({ userId, username, rating, comment });
 
-  // Tính lại đánh giá trung bình
   const totalRatings = product.reviews.reduce(
     (sum, review) => sum + review.rating,
     0
@@ -17,7 +15,6 @@ const addReview = async (productId, userId, username, rating, comment) => {
   const numReviews = product.reviews.length;
   product.averageRating = (totalRatings / numReviews).toFixed(2);
 
-  // Tính phần trăm đánh giá
   const ratingCounts = [0, 0, 0, 0, 0];
   product.reviews.forEach((review) => ratingCounts[review.rating - 1]++);
 
@@ -33,7 +30,6 @@ const addReview = async (productId, userId, username, rating, comment) => {
   return product;
 };
 
-// Lấy thông tin đánh giá
 const getProductReviews = async (productId) => {
   const product = await Product.findById(productId).populate(
     "reviews.replies.userId",
@@ -50,7 +46,6 @@ const getProductReviews = async (productId) => {
   };
 };
 
-// Thêm trả lời vào bình luận
 const addReplyToReview = async (
   productId,
   reviewId,
@@ -74,13 +69,11 @@ const addReplyToReview = async (
   return product;
 };
 const getAllComments = async () => {
-  // Tìm tất cả sản phẩm và chỉ lấy trường "reviews"
   const products = await Product.find({}, "reviews name").populate(
     "reviews.userId",
     "username"
   );
 
-  // Trả về danh sách sản phẩm kèm bình luận
   const comments = products.map((product) => ({
     productId: product._id,
     productName: product.name,
@@ -91,14 +84,12 @@ const getAllComments = async () => {
 };
 
 const countUserReviews = async () => {
-  // Tìm tất cả sản phẩm
   const products = await Product.find({}, "reviews");
 
-  // Đếm số lượng đánh giá từ người dùng
   let totalReviews = 0;
 
   products.forEach((product) => {
-    totalReviews += product.reviews.length; // Chỉ đếm các đánh giá trong mảng reviews
+    totalReviews += product.reviews.length;
   });
 
   return totalReviews;

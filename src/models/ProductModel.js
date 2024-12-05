@@ -1,7 +1,6 @@
 const timespan = require("jsonwebtoken/lib/timespan");
 const mongoose = require("mongoose");
 
-// **Schema phản hồi (Reply)**
 const replySchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   username: { type: String, required: true },
@@ -9,7 +8,6 @@ const replySchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
-// **Schema đánh giá (Review)**
 const reviewSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   username: { type: String, required: true },
@@ -23,9 +21,9 @@ const productSchema = new mongoose.Schema(
   {
     name: { type: String },
     quantityInStock: { type: Number },
-    prices: { type: Number, default: 0 }, // Giá gốc
-    discount: { type: Number, default: 0 }, // % Giảm giá (0-100)
-    promotionPrice: { type: Number, default: 0 }, // Giá sau khi giảm
+    prices: { type: Number, default: 0 },
+    discount: { type: Number, default: 0 },
+    promotionPrice: { type: Number, default: 0 },
     size: { type: String },
     color: { type: String },
     imageUrl: { type: String },
@@ -48,13 +46,12 @@ const productSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-// **Middleware: Tính giá sau khi giảm trước khi lưu**
+
 productSchema.pre("save", function (next) {
   this.promotionPrice = this.prices - (this.prices * this.discount) / 100;
   next();
 });
 
-// **Middleware: Tính giá sau khi giảm khi cập nhật**
 productSchema.pre("findOneAndUpdate", function (next) {
   const update = this.getUpdate();
   if (update.prices || update.discount) {

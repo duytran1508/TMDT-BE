@@ -4,10 +4,8 @@ const addAddress = async (userId, addressData) => {
   let userAddress = await Address.findOne({ userId });
 
   if (!userAddress) {
-    // Nếu user chưa có địa chỉ, tạo mới
     userAddress = new Address({ userId, addresses: [addressData] });
   } else {
-    // Kiểm tra xem địa chỉ có trùng không
     const isDuplicate = userAddress.addresses.some(
       (addr) =>
         addr.name === addressData.name &&
@@ -17,11 +15,9 @@ const addAddress = async (userId, addressData) => {
     );
 
     if (isDuplicate) {
-      // Trả về OK nếu trùng lặp nhưng không lưu
       return { status: 200, message: "Duplicate address, not saved." };
     }
 
-    // Thêm địa chỉ mới nếu không trùng
     userAddress.addresses.push(addressData);
   }
 
@@ -43,7 +39,6 @@ const deleteAddress = async (userId, addressId) => {
     throw new Error("User not found or no addresses available");
   }
 
-  // Lọc ra các địa chỉ không khớp với addressId
   const updatedAddresses = userAddress.addresses.filter(
     (address) => address._id.toString() !== addressId
   );

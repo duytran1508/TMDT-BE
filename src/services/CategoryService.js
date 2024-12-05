@@ -97,9 +97,8 @@ const deleteCategory = (id) => {
           message: "Category not found"
         });
       } else {
-        // Xóa tất cả các sản phẩm có cùng category
         await Product.deleteMany({ category: id });
-        // Xóa category
+
         await Category.findByIdAndDelete(id);
         resolve({
           status: "OK",
